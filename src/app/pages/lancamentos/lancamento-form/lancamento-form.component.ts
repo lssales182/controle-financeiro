@@ -79,7 +79,7 @@ export class LancamentoFormComponent implements OnInit, AfterContentChecked{
   }
 
   get typeOptions(): Array<any>{
-    return Object.lancamentos(Lancamento.types).map(
+    return Object.entries(Lancamento.types).map(
       ([value, text]) => {
         return {
           text: text,
