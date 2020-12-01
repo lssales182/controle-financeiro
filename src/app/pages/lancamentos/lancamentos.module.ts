@@ -7,6 +7,8 @@ import { LancamentosRoutingModule } from './lancamentos-routing.module';
 import { LancamentoListComponent } from "./lancamento-list/lancamento-list.component";
 import { LancamentoFormComponent } from "./lancamento-form/lancamento-form.component";
 
+import { TableModule } from 'primeng/table';
+import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { CalendarModule } from "primeng/calendar";
 import { IMaskModule } from "angular-imask";
 
@@ -15,8 +17,11 @@ import { IMaskModule } from "angular-imask";
     CommonModule,
     LancamentosRoutingModule,
     ReactiveFormsModule,
+
+    BreadcrumbModule,
     CalendarModule,
-    IMaskModule
+    IMaskModule,
+    TableModule
   ],
   declarations: [LancamentoListComponent, LancamentoFormComponent]
 })

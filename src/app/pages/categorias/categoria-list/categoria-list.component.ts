@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MenuItem } from 'primeng/api';
 
 import { Categoria } from "../shared/categoria.model";
 import { CategoriaService } from "../shared/categoria.service";
@@ -12,7 +13,15 @@ export class CategoriaListComponent implements OnInit {
 
   categorias: Categoria[] = [];
 
-  constructor(private categoriaService: CategoriaService) { }
+  items: MenuItem[];
+  home: MenuItem;
+
+  constructor(private categoriaService: CategoriaService) {
+    this.items = [
+      { label: 'Categorias'}
+    ];
+    this.home = { icon: 'pi pi-home', routerLink: '/' };
+  }
 
   ngOnInit() {
     this.categoriaService.getAll()

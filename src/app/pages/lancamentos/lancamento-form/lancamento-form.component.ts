@@ -1,6 +1,7 @@
 import { Component, OnInit, AfterContentChecked } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
+import { MenuItem } from 'primeng/api';
 
 import { Lancamento } from "../shared/lancamento.model";
 import { LancamentoService } from "../shared/lancamento.service";
@@ -17,7 +18,7 @@ import toastr from "toastr";
   templateUrl: './lancamento-form.component.html',
   styleUrls: ['./lancamento-form.component.css']
 })
-export class LancamentoFormComponent implements OnInit, AfterContentChecked{
+export class LancamentoFormComponent implements OnInit, AfterContentChecked {
 
   currentAction: string;
   lancamentoForm: FormGroup;
@@ -50,13 +51,19 @@ export class LancamentoFormComponent implements OnInit, AfterContentChecked{
     clear: 'Limpar'
   }
 
+  items: MenuItem[];
+  home: MenuItem;
+
   constructor(
     private lancamentoService: LancamentoService,
     private route: ActivatedRoute,
     private router: Router,
     private formBuilder: FormBuilder,
     private categoriaService: CategoriaService
-  ) { }
+  ) {
+    this.items = [{ label: 'Lancaçmentos' }];
+    this.home = { icon: 'pi pi-home', routerLink: '/' };
+  }
 
   ngOnInit() {
     this.setCurrentAction();
@@ -65,20 +72,20 @@ export class LancamentoFormComponent implements OnInit, AfterContentChecked{
     this.loadCategorias();
   }
 
-  ngAfterContentChecked(){
+  ngAfterContentChecked() {
     this.setPageTitle();
   }
 
-  submitForm(){
+  submitForm() {
     this.submittingForm = true;
 
-    if(this.currentAction == "new")
+    if (this.currentAction == "new")
       this.createLancamento();
     else // currentAction == "edit"
       this.updateLancamento();
   }
 
-  get typeOptions(): Array<any>{
+  get typeOptions(): Array<any> {
     return Object.entries(Lancamento.types).map(
       ([value, text]) => {
         return {
@@ -93,7 +100,7 @@ export class LancamentoFormComponent implements OnInit, AfterContentChecked{
   // PRIVATE METHODS
 
   private setCurrentAction() {
-    if(this.route.snapshot.url[0].path == "new")
+    if (this.route.snapshot.url[0].path == "new")
       this.currentAction = "new"
     else
       this.currentAction = "edit"
@@ -118,34 +125,36 @@ export class LancamentoFormComponent implements OnInit, AfterContentChecked{
       this.route.paramMap.pipe(
         switchMap(params => this.lancamentoService.getById(+params.get("id")))
       )
-      .subscribe(
-        (lancamento) => {
-          this.lancamento = lancamento;
-          this.lancamentoForm.patchValue(lancamento) // binds loaded lancamento data to LancamentoForm
-        },
-        (error) => alert('Ocorreu um erro no servidor, tente mais tarde.')
-      )
+        .subscribe(
+          (lancamento) => {
+            this.lancamento = lancamento;
+            this.lancamentoForm.patchValue(lancamento) // binds loaded lancamento data to LancamentoForm
+          },
+          (error) => alert('Ocorreu um erro no servidor, tente mais tarde.')
+        )
     }
   }
 
-  private loadCategorias(){
-    this.categoriaService.getAll().subscribe(
-      categorias => this.categorias = categorias
-    );
+  private loadCategorias() {
+    this.categoriaService.getAll()
+      .subscribe(
+        categorias => this.categorias = categorias
+      );
   }
 
 
   private setPageTitle() {
     if (this.currentAction == 'new')
       this.pageTitle = "Cadastro de Novo Lançamento"
-    else{
+    else {
       const lancamentoName = this.lancamento.name || ""
       this.pageTitle = "Editando Lançamento: " + lancamentoName;
     }
+    this.items = [...[{ label: 'Lancaçmentos' }], { label: this.pageTitle }];
   }
 
 
-  private createLancamento(){
+  private createLancamento() {
     const lancamento: Lancamento = Object.assign(new Lancamento(), this.lancamentoForm.value);
 
     this.lancamentoService.create(lancamento)
@@ -156,7 +165,7 @@ export class LancamentoFormComponent implements OnInit, AfterContentChecked{
   }
 
 
-  private updateLancamento(){
+  private updateLancamento() {
     const lancamento: Lancamento = Object.assign(new Lancamento(), this.lancamentoForm.value);
 
     this.lancamentoService.update(lancamento)
@@ -167,22 +176,22 @@ export class LancamentoFormComponent implements OnInit, AfterContentChecked{
   }
 
 
-  private actionsForSuccess(lancamento: Lancamento){
+  private actionsForSuccess(lancamento: Lancamento) {
     toastr.success("Solicitação processada com sucesso!");
 
     // redirect/reload component page
-    this.router.navigateByUrl("lancamentos", {skipLocationChange: true}).then(
+    this.router.navigateByUrl("lancamentos", { skipLocationChange: true }).then(
       () => this.router.navigate(["lancamentos", lancamento.id, "edit"])
     )
   }
 
 
-  private actionsForError(error){
+  private actionsForError(error) {
     toastr.error("Ocorreu um erro ao processar a sua solicitação!");
 
     this.submittingForm = false;
 
-    if(error.status === 422)
+    if (error.status === 422)
       this.serverErrorMessages = JSON.parse(error._body).errors;
     else
       this.serverErrorMessages = ["Falha na comunicação com o servidor. Por favor, tente mais tarde."]

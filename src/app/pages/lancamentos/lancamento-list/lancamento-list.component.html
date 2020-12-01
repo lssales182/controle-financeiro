@@ -1,9 +1,4 @@
-<nav class="mb-5">
-  <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
-    <li class="breadcrumb-item active">Lançamentos</li>
-  </ol>
-</nav>
+<p-breadcrumb [model]="items" [home]="home" styleClass="mb-5"></p-breadcrumb>
 
 <div class="row mb-4">
   <div class="col-md">
@@ -18,37 +13,34 @@
   </div>
 </div>
 
-
-<table class="table table-hover">
-  <thead>
-    <tr class="bg-primary text-light">
+<p-table [value]="lancamentos">
+  <ng-template pTemplate="header">
+    <tr>
       <th>Lançamento</th>
-      <th>Categoria</th>
+      <th class="text-right">Name</th>
       <th class="text-right">Valor R$</th>
       <th class="text-center">Ações</th>
     </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let lancamento of lancamentos">
+  </ng-template>
+  <ng-template pTemplate="body" let-lancamento>
+    <tr>
       <td>
         <strong>{{lancamento.name}}</strong><br>
         <small class="text-success">{{lancamento.date}}</small><br>
         <small *ngIf="lancamento.description">{{lancamento.description}}</small>
       </td>
-      <td>
-        {{lancamento.categoria.name}}
-      </td>
+      <td class="text-right">{{lancamento.categoria.name}}</td>
       <td class="text-right">
-        <strong [class.text-success]="lancamento.type == 'revenue'" [class.text-danger]="lancamento.type == 'expense'">
+        <strong [class.text-success]="lancamento.type == 'revenue'"
+          [class.text-danger]="lancamento.type == 'expense'">
           {{lancamento.amount}}
         </strong>
         <br>
-        <span class="badge badge-light">{{lancamento.paidText}}</span>
-      </td>
+        <span class="badge badge-light">{{lancamento.paidText}}</span></td>
       <td class="text-center">
         <a [routerLink]="[lancamento.id, 'edit']" class="btn btn-outline-info btn-sm mr-2">Editar</a>
         <button (click)="deleteLancamento(lancamento)" class="btn btn-outline-danger btn-sm">Excluir</button>
       </td>
     </tr>
-  </tbody>
-</table>
+  </ng-template>
+</p-table>

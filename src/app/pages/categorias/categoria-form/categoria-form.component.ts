@@ -1,6 +1,7 @@
 import { Component, OnInit, AfterContentChecked } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
+import { MenuItem } from 'primeng/api';
 
 import { Categoria } from "../shared/categoria.model";
 import { CategoriaService } from "../shared/categoria.service";
@@ -14,7 +15,7 @@ import toastr from "toastr";
   templateUrl: './categoria-form.component.html',
   styleUrls: ['./categoria-form.component.css']
 })
-export class CategoriaFormComponent implements OnInit, AfterContentChecked{
+export class CategoriaFormComponent implements OnInit, AfterContentChecked {
 
   currentAction: string;
   categoriaForm: FormGroup;
@@ -23,12 +24,18 @@ export class CategoriaFormComponent implements OnInit, AfterContentChecked{
   submittingForm: boolean = false;
   categoria: Categoria = new Categoria();
 
+  items: MenuItem[];
+  home: MenuItem;
+
   constructor(
     private categoriaService: CategoriaService,
     private route: ActivatedRoute,
     private router: Router,
     private formBuilder: FormBuilder
-  ) { }
+  ) {
+    this.items = [{ label: 'Categorias' }];
+    this.home = { icon: 'pi pi-home', routerLink: '/' };
+  }
 
   ngOnInit() {
     this.setCurrentAction();
@@ -36,14 +43,14 @@ export class CategoriaFormComponent implements OnInit, AfterContentChecked{
     this.loadCategoria();
   }
 
-  ngAfterContentChecked(){
+  ngAfterContentChecked() {
     this.setPageTitle();
   }
 
-  submitForm(){
+  submitForm() {
     this.submittingForm = true;
 
-    if(this.currentAction == "new")
+    if (this.currentAction == "new")
       this.createCategoria();
     else // currentAction == "edit"
       this.updateCategoria();
@@ -53,7 +60,7 @@ export class CategoriaFormComponent implements OnInit, AfterContentChecked{
   // PRIVATE METHODS
 
   private setCurrentAction() {
-    if(this.route.snapshot.url[0].path == "new")
+    if (this.route.snapshot.url[0].path == "new")
       this.currentAction = "new"
     else
       this.currentAction = "edit"
@@ -73,13 +80,13 @@ export class CategoriaFormComponent implements OnInit, AfterContentChecked{
       this.route.paramMap.pipe(
         switchMap(params => this.categoriaService.getById(+params.get("id")))
       )
-      .subscribe(
-        (categoria) => {
-          this.categoria = categoria;
-          this.categoriaForm.patchValue(categoria) // binds loaded categoria data to CategoriaForm
-        },
-        (error) => alert('Ocorreu um erro no servidor, tente mais tarde.')
-      )
+        .subscribe(
+          (categoria) => {
+            this.categoria = categoria;
+            this.categoriaForm.patchValue(categoria) // binds loaded categoria data to CategoriaForm
+          },
+          (error) => alert('Ocorreu um erro no servidor, tente mais tarde.')
+        )
     }
   }
 
@@ -87,14 +94,15 @@ export class CategoriaFormComponent implements OnInit, AfterContentChecked{
   private setPageTitle() {
     if (this.currentAction == 'new')
       this.pageTitle = "Cadastro de Nova Categoria"
-    else{
+    else {
       const categoriaName = this.categoria.name || ""
       this.pageTitle = "Editando Categoria: " + categoriaName;
     }
+    this.items = [...[{ label: 'Categorias' }], { label: this.pageTitle }];
   }
 
 
-  private createCategoria(){
+  private createCategoria() {
     const categoria: Categoria = Object.assign(new Categoria(), this.categoriaForm.value);
 
     this.categoriaService.create(categoria)
@@ -105,7 +113,7 @@ export class CategoriaFormComponent implements OnInit, AfterContentChecked{
   }
 
 
-  private updateCategoria(){
+  private updateCategoria() {
     const categoria: Categoria = Object.assign(new Categoria(), this.categoriaForm.value);
 
     this.categoriaService.update(categoria)
@@ -116,22 +124,22 @@ export class CategoriaFormComponent implements OnInit, AfterContentChecked{
   }
 
 
-  private actionsForSuccess(categoria: Categoria){
+  private actionsForSuccess(categoria: Categoria) {
     toastr.success("Solicitação processada com sucesso!");
 
     // redirect/reload component page
-    this.router.navigateByUrl("categorias", {skipLocationChange: true}).then(
+    this.router.navigateByUrl("categorias", { skipLocationChange: true }).then(
       () => this.router.navigate(["categorias", categoria.id, "edit"])
     )
   }
 
 
-  private actionsForError(error){
+  private actionsForError(error) {
     toastr.error("Ocorreu um erro ao processar a sua solicitação!");
 
     this.submittingForm = false;
 
-    if(error.status === 422)
+    if (error.status === 422)
       this.serverErrorMessages = JSON.parse(error._body).errors;
     else
       this.serverErrorMessages = ["Falha na comunicação com o servidor. Por favor, tente mais tarde."]

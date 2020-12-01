@@ -1,9 +1,4 @@
-<nav class="mb-5">
-  <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
-    <li class="breadcrumb-item active">Categorias</li>
-  </ol>
-</nav>
+<p-breadcrumb [model]="items" [home]="home" styleClass="mb-5"></p-breadcrumb>
 
 <div class="row mb-4">
   <div class="col-md">
@@ -18,16 +13,15 @@
   </div>
 </div>
 
-
-<table class="table table-hover">
-  <thead>
-    <tr class="bg-primary text-light">
+<p-table [value]="categorias">
+  <ng-template pTemplate="header">
+    <tr>
       <th>Categoria</th>
       <th>Ações</th>
     </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let categoria of categorias">
+  </ng-template>
+  <ng-template pTemplate="body" let-categoria>
+    <tr>
       <td>
         <strong>{{categoria.name}}</strong><br>
         <small>{{categoria.description}}</small>
@@ -37,5 +31,5 @@
         <button (click)="deleteCategoria(categoria)" class="btn btn-outline-danger btn-sm">Excluir</button>
       </td>
     </tr>
-  </tbody>
-</table>
+  </ng-template>
+</p-table>

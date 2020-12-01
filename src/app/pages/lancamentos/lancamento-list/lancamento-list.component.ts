@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MenuItem } from 'primeng/api';
 
 import { Lancamento } from "../shared/lancamento.model";
 import { LancamentoService } from "../shared/lancamento.service";
@@ -12,11 +13,21 @@ export class LancamentoListComponent implements OnInit {
 
   lancamentos: Lancamento[] = [];
 
-  constructor(private lancamentoService: LancamentoService) { }
+  items: MenuItem[];
+  home: MenuItem;
+
+  constructor(
+    private lancamentoService: LancamentoService
+  ) {
+    this.items = [
+      { label: 'Lançamentos'}
+    ];
+    this.home = { icon: 'pi pi-home', routerLink: '/' };
+  }
 
   ngOnInit() {
     this.lancamentoService.getAll().subscribe(
-      lancamentos => this.lancamentos = lancamentos.sort((a,b) => b.id - a.id),
+      lancamentos => this.lancamentos = lancamentos.sort((a, b) => b.id - a.id),
       error => alert('Erro ao carregar a lista')
     )
   }
@@ -24,7 +35,7 @@ export class LancamentoListComponent implements OnInit {
   deleteLancamento(lancamento) {
     const mustDelete = confirm('Deseja realmente excluir este item?');
 
-    if (mustDelete){
+    if (mustDelete) {
       this.lancamentoService.delete(lancamento.id).subscribe(
         () => this.lancamentos = this.lancamentos.filter(element => element != lancamento),
         () => alert("Erro ao tentar excluir!")

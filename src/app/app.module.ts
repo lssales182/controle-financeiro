@@ -9,6 +9,9 @@ import { AppComponent } from './app.component';
 import { HttpClientInMemoryWebApiModule } from "angular-in-memory-web-api";
 import { InMemoryDatabase } from "./in-memory-database";
 
+import { MenubarModule } from 'primeng/menubar';
+import { SharedModule } from 'primeng/api';
+
 @NgModule({
   declarations: [
     AppComponent
@@ -18,7 +21,10 @@ import { InMemoryDatabase } from "./in-memory-database";
     BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
-    HttpClientInMemoryWebApiModule.forRoot(InMemoryDatabase)
+    HttpClientInMemoryWebApiModule.forRoot(InMemoryDatabase),
+
+    MenubarModule,
+    SharedModule
   ],
   providers: [],
   bootstrap: [AppComponent]
