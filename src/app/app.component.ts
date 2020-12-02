@@ -15,10 +15,6 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.items = [
       {
-        label: 'Relatórios',
-        routerLink: '/reports'
-      },
-      {
         label: 'Lançamentos',
         routerLink: '/lancamentos'
       },

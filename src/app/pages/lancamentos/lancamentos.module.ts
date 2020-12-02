@@ -7,6 +7,7 @@ import { LancamentosRoutingModule } from './lancamentos-routing.module';
 import { LancamentoListComponent } from "./lancamento-list/lancamento-list.component";
 import { LancamentoFormComponent } from "./lancamento-form/lancamento-form.component";
 
+import { MessageModule } from 'primeng/message';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { DropdownModule } from 'primeng/dropdown';
 import { PanelModule } from 'primeng/panel';
@@ -23,6 +24,7 @@ import { ToastModule } from 'primeng/toast';
     LancamentosRoutingModule,
     ReactiveFormsModule,
 
+    MessageModule,
     ToastModule,
     SelectButtonModule,
     DropdownModule,

@@ -4,6 +4,8 @@ import { MenuItem } from 'primeng/api';
 import { Lancamento } from "../lancamento.model";
 import { LancamentoService } from "../lancamento.service";
 
+import currencyFormatter from "currency-formatter";
+
 @Component({
   selector: 'app-lancamento-list',
   templateUrl: './lancamento-list.component.html',
@@ -12,6 +14,10 @@ import { LancamentoService } from "../lancamento.service";
 export class LancamentoListComponent implements OnInit {
 
   lancamentos: Lancamento[] = [];
+
+  expenseTotal: any = 0;
+  revenueTotal: any = 0;
+  balance: any = 0;
 
   items: MenuItem[];
   home: MenuItem;
@@ -26,9 +32,11 @@ export class LancamentoListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.lancamentoService.getAll().subscribe(
+    this.lancamentoService.getAll()
+    .subscribe(
       lancamentos => this.lancamentos = lancamentos.sort((a, b) => b.id - a.id),
-      error => alert('Erro ao carregar a lista')
+      error => alert('Erro ao carregar a lista'),
+      () => this.calculateBalance()
     )
   }
 
@@ -37,10 +45,29 @@ export class LancamentoListComponent implements OnInit {
 
     if (mustDelete) {
       this.lancamentoService.delete(lancamento.id).subscribe(
-        () => this.lancamentos = this.lancamentos.filter(element => element != lancamento),
-        () => alert("Erro ao tentar excluir!")
+        () => {this.lancamentos = this.lancamentos.filter(element => element != lancamento)},
+        error => alert("Erro ao tentar excluir!"),
+        () => this.calculateBalance()
       )
     }
+  }
+
+  // PRIVATE METHODS
+
+  private calculateBalance(){
+    let expenseTotal = 0;
+    let revenueTotal = 0;
+
+    this.lancamentos.forEach(l => {
+      if(l.type == 'revenue')
+        revenueTotal += currencyFormatter.unformat(l.amount, { code: 'BRL' })
+      else
+        expenseTotal += currencyFormatter.unformat(l.amount, { code: 'BRL' })
+    });
+
+    this.expenseTotal = currencyFormatter.format(expenseTotal, { code: 'BRL'});
+    this.revenueTotal = currencyFormatter.format(revenueTotal, { code: 'BRL'});
+    this.balance = currencyFormatter.format(revenueTotal - expenseTotal, { code: 'BRL'});
   }
 
 }

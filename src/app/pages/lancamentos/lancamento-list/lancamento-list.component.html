@@ -12,6 +12,13 @@
 </div>
 
 <p-table [value]="lancamentos" [paginator]="true" [rows]="10" styleClass="p-mb-5">
+  <ng-template pTemplate="caption">
+    <div class="p-d-flex p-jc-end">
+      <p-message severity="success" [text]="revenueTotal" styleClass="p-mr-2"></p-message>
+      <p-message severity="error" [text]="expenseTotal" styleClass="p-mr-2"></p-message>
+      <p-message severity="warn" [text]="balance"></p-message>
+    </div>
+  </ng-template>
   <ng-template pTemplate="header">
     <tr>
       <th>Lançamento</th>
