@@ -13,7 +13,7 @@
   </div>
 </div>
 
-<p-table [value]="lancamentos">
+<p-table [value]="lancamentos" [paginator]="true" [rows]="10">
   <ng-template pTemplate="header">
     <tr>
       <th>Lançamento</th>

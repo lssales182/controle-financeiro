@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 
-import { Lancamento } from "../shared/lancamento.model";
-import { LancamentoService } from "../shared/lancamento.service";
+import { Lancamento } from "../lancamento.model";
+import { LancamentoService } from "../lancamento.service";
 
 @Component({
   selector: 'app-lancamento-list',

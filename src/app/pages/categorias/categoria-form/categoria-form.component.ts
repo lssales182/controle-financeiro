@@ -3,8 +3,8 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { MenuItem } from 'primeng/api';
 
-import { Categoria } from "../shared/categoria.model";
-import { CategoriaService } from "../shared/categoria.service";
+import { Categoria } from "../categoria.model";
+import { CategoriaService } from "../categoria.service";
 
 import { switchMap } from "rxjs/operators";
 

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 
-import { Categoria } from "../shared/categoria.model";
-import { CategoriaService } from "../shared/categoria.service";
+import { Categoria } from "../categoria.model";
+import { CategoriaService } from "../categoria.service";
 
 @Component({
   selector: 'app-categoria-list',

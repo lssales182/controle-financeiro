@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 
 import { Observable, throwError } from "rxjs";
 import { map, catchError, flatMap } from "rxjs/operators";
 
-import { CategoriaService } from "../../categorias/shared/categoria.service";
+import { CategoriaService } from "../categorias/categoria.service";
 
 import { Lancamento } from "./lancamento.model";
 

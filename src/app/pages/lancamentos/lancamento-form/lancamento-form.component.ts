@@ -3,11 +3,11 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { MenuItem } from 'primeng/api';
 
-import { Lancamento } from "../shared/lancamento.model";
-import { LancamentoService } from "../shared/lancamento.service";
+import { Lancamento } from "../lancamento.model";
+import { LancamentoService } from "../lancamento.service";
 
-import { Categoria } from "../../categorias/shared/categoria.model";
-import { CategoriaService } from "../../categorias/shared/categoria.service";
+import { Categoria } from "../../categorias/categoria.model";
+import { CategoriaService } from "../../categorias/categoria.service";
 
 import { switchMap } from "rxjs/operators";
 
