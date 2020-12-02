@@ -1,25 +1,23 @@
-<p-breadcrumb [model]="items" [home]="home" styleClass="mb-5"></p-breadcrumb>
+<p-breadcrumb [model]="items" [home]="home" styleClass="p-mb-5"></p-breadcrumb>
 
-<div class="row mb-4">
-  <div class="col-md">
-    <h1 class="h2 border-left pl-2">
+<div class="p-d-flex p-jc-between p-mb-4">
+  <div>
+    <h2 class="p-m-0">
       Lançamentos
-    </h1>
+    </h2>
   </div>
-  <div class="col-md">
-    <a routerLink="new" class="btn btn-success float-right">
-      + Novo Lançamento
-    </a>
+  <div class="p-as-center">
+    <button routerLink="new" pButton pRipple type="button" label="Novo Lançamento" icon="pi pi-plus" class="p-button-raised"></button>
   </div>
 </div>
 
-<p-table [value]="lancamentos" [paginator]="true" [rows]="10">
+<p-table [value]="lancamentos" [paginator]="true" [rows]="10" styleClass="p-mb-5">
   <ng-template pTemplate="header">
     <tr>
       <th>Lançamento</th>
-      <th class="text-right">Name</th>
-      <th class="text-right">Valor R$</th>
-      <th class="text-center">Ações</th>
+      <th class="p-text-right">Name</th>
+      <th class="p-text-right">Valor R$</th>
+      <th class="p-text-center">Ações</th>
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-lancamento>
@@ -29,17 +27,18 @@
         <small class="text-success">{{lancamento.date}}</small><br>
         <small *ngIf="lancamento.description">{{lancamento.description}}</small>
       </td>
-      <td class="text-right">{{lancamento.categoria.name}}</td>
-      <td class="text-right">
+      <td class="p-text-right">{{lancamento.categoryName}}</td>
+      <td class="p-text-right">
         <strong [class.text-success]="lancamento.type == 'revenue'"
           [class.text-danger]="lancamento.type == 'expense'">
           {{lancamento.amount}}
         </strong>
         <br>
-        <span class="badge badge-light">{{lancamento.paidText}}</span></td>
-      <td class="text-center">
-        <a [routerLink]="[lancamento.id, 'edit']" class="btn btn-outline-info btn-sm mr-2">Editar</a>
-        <button (click)="deleteLancamento(lancamento)" class="btn btn-outline-danger btn-sm">Excluir</button>
+        <span [ngClass]="'p-tag p-tag-' + lancamento.paidClass">{{lancamento.paidText}}</span>
+      </td>
+      <td class="p-text-center">
+        <button [routerLink]="[lancamento.id, 'edit']" pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-warning p-button-outlined p-mr-2"></button>
+        <button (click)="deleteLancamento(lancamento)" pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger p-button-outlined"></button>
       </td>
     </tr>
   </ng-template>

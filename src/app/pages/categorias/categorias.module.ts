@@ -8,6 +8,10 @@ import { CategoriaFormComponent } from './categoria-form/categoria-form.componen
 
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { TableModule } from 'primeng/table';
+import { ButtonModule } from 'primeng/button';
+import { ToastModule } from 'primeng/toast';
+import { PanelModule } from 'primeng/panel';
+import { InputTextModule } from 'primeng/inputtext';
 
 @NgModule({
   imports: [
@@ -15,6 +19,10 @@ import { TableModule } from 'primeng/table';
     CategoriasRoutingModule,
     ReactiveFormsModule,
 
+    InputTextModule,
+    PanelModule,
+    ToastModule,
+    ButtonModule,
     BreadcrumbModule,
     TableModule
   ],

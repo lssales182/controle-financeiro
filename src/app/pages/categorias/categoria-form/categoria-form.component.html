@@ -1,56 +1,47 @@
-<p-breadcrumb [model]="items" [home]="home" styleClass="mb-5"></p-breadcrumb>
+<p-toast></p-toast>
+<p-breadcrumb [model]="items" [home]="home" styleClass="p-mb-5"></p-breadcrumb>
 
-<div class="row mb-4">
-  <div class="col-md">
-    <h1 class="h2 border-left pl-2">
+<div class="p-mb-4 p-d-flex p-jc-between">
+  <div>
+    <h2 class="p-m-0">
       {{pageTitle}}
-    </h1>
+    </h2>
   </div>
-  <div class="col-md">
-    <a routerLink="/categorias" class="btn btn-light float-right">
-      << Voltar
-    </a>
+  <div>
+    <button routerLink="/categorias" pButton pRipple type="button" label="Voltar" icon="pi pi-chevron-left"
+      class="p-button-secondary p-button-text"></button>
   </div>
 </div>
 
 
 <form [formGroup]="categoriaForm" (submit)="submitForm()">
 
-  <div class="card">
-    <div class="card-header">
-      Informações sobre a categoria
-    </div>
-
-    <div class="card-body">
-      <div class="form-row">
-        <div class="form-group col-md-4">
+  <p-panel header="Informações sobre a categoria">
+    <div class="p-fluid p-grid p-mt-2">
+      <!-- name -->
+      <div class="p-field p-md-5">
+        <span class="p-float-label">
+          <input type="text" id="name" pInputText formControlName="name">
           <label for="name">Nome</label>
-          <input type="text" class="form-control" id="name" formControlName="name">
+        </span>
 
-          <div class="text-danger" *ngIf="categoriaForm.get('name').invalid && categoriaForm.get('name').touched">
-            <div *ngIf="categoriaForm.get('name').errors.required">dado obrigatório</div>
-            <div *ngIf="categoriaForm.get('name').errors.minlength">deve ter no mínimo 2 caracteres</div>
-          </div>
-        </div>
-
-        <div class="form-group col-md-8">
-          <label for="description">Descrição</label>
-          <input type="text" class="form-control" id="description" formControlName="description">
+        <div class="text-danger" *ngIf="categoriaForm.get('name').invalid && categoriaForm.get('name').touched">
+          <div *ngIf="categoriaForm.get('name').errors.required">dado obrigatório</div>
+          <div *ngIf="categoriaForm.get('name').errors.minlength">deve ter no mínimo 2 caracteres</div>
         </div>
       </div>
+      <!-- description -->
+      <div class="p-field p-md-7">
+        <span class="p-float-label">
+          <input type="text" id="description" pInputText formControlName="description">
+          <label for="description">Descrição</label>
+        </span>
+      </div>
     </div>
+  </p-panel>
+
+  <div class="p-d-flex p-jc-end">
+    <button [disabled]="submittingForm || categoriaForm.invalid" type="submit" pButton pRipple label="Salvar" class="p-button-raised p-mt-3"></button>
   </div>
-
-
-  <div class="alert alert-danger mt-4" *ngIf="serverErrorMessages">
-    <strong>Erro no servidor:</strong>
-    <ul>
-      <li *ngFor="let error of serverErrorMessages">{{error}}</li>
-    </ul>
-  </div>
-
-  <button [disabled]="submittingForm || categoriaForm.invalid" type="submit" class="btn btn-primary btn-lg float-right mt-3">
-    Salvar
-  </button>
 
 </form>

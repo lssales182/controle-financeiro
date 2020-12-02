@@ -35,31 +35,19 @@ export class LancamentoService {
   }
 
   create(lancamento: Lancamento): Observable<Lancamento> {
-    return this.categoriaService.getById(lancamento.categoriaId).pipe(
-      flatMap(categoria => {
-        lancamento.categoria = categoria;
-
-        return this.http.post(this.apiPath, lancamento).pipe(
-          catchError(this.handleError),
-          map(this.jsonDataToLancamento)
-        )
-      })
+    return this.http.post(this.apiPath, lancamento).pipe(
+      catchError(this.handleError),
+      map(this.jsonDataToLancamento)
     );
   }
 
   update(lancamento: Lancamento): Observable<Lancamento> {
     const url = `${this.apiPath}/${lancamento.id}`;
 
-    return this.categoriaService.getById(lancamento.categoriaId).pipe(
-      flatMap(categoria => {
-        lancamento.categoria = categoria;
-
-        return this.http.put(url, lancamento).pipe(
-          catchError(this.handleError),
-          map(() => lancamento)
-        )
-      })
-    )
+    return this.http.put(url, lancamento).pipe(
+      catchError(this.handleError),
+      map(() => lancamento)
+    );
   }
 
   delete(id: number): Observable<any> {

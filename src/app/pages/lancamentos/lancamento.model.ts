@@ -1,5 +1,3 @@
-import { Categoria } from "../categorias/categoria.model";
-
 export class Lancamento {
   constructor(
     public id?: number,
@@ -9,17 +7,14 @@ export class Lancamento {
     public amount?: string,
     public date?: string,
     public paid?: boolean,
-    public categoriaId?: number,
-    public categoria?: Categoria
+    public categoryName?: string
   ){ }
-
-
-  static types = {
-    expense: 'Despesa',
-    revenue: 'Receita'
-  };
 
   get paidText(): string {
     return this.paid ? 'Pago' : 'Pedente';
+  }
+
+  get paidClass(): string {
+    return this.paid ? 'success' : 'warning';
   }
 }

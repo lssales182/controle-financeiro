@@ -1,23 +1,21 @@
-<p-breadcrumb [model]="items" [home]="home" styleClass="mb-5"></p-breadcrumb>
+<p-breadcrumb [model]="items" [home]="home" styleClass="p-mb-5"></p-breadcrumb>
 
-<div class="row mb-4">
-  <div class="col-md">
-    <h1 class="h2 border-left pl-2">
+<div class="p-d-flex p-jc-between p-mb-4">
+  <div>
+    <h2 class="p-m-0">
       Categorias
-    </h1>
+    </h2>
   </div>
-  <div class="col-md">
-    <a routerLink="new" class="btn btn-success float-right">
-      + Nova Categoria
-    </a>
+  <div class="p-as-center">
+    <button routerLink="new" pButton pRipple type="button" label="Nova Categoria" icon="pi pi-plus" class="p-button-raised"></button>
   </div>
 </div>
 
-<p-table [value]="categorias">
+<p-table [value]="categorias" [paginator]="true" [rows]="10" styleClass="p-mb-5">
   <ng-template pTemplate="header">
     <tr>
       <th>Categoria</th>
-      <th>Ações</th>
+      <th class="p-text-center">Ações</th>
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-categoria>
@@ -26,9 +24,9 @@
         <strong>{{categoria.name}}</strong><br>
         <small>{{categoria.description}}</small>
       </td>
-      <td>
-        <a [routerLink]="[categoria.id, 'edit']" class="btn btn-outline-info btn-sm mr-2">Editar</a>
-        <button (click)="deleteCategoria(categoria)" class="btn btn-outline-danger btn-sm">Excluir</button>
+      <td class="p-text-center">
+        <button [routerLink]="[categoria.id, 'edit']" pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-warning p-button-outlined p-mr-2"></button>
+        <button (click)="deleteCategoria(categoria)" pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger p-button-outlined"></button>
       </td>
     </tr>
   </ng-template>

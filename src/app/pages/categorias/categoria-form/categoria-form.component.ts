@@ -1,19 +1,18 @@
 import { Component, OnInit, AfterContentChecked } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
-import { MenuItem } from 'primeng/api';
+import { switchMap } from "rxjs/operators";
 
 import { Categoria } from "../categoria.model";
 import { CategoriaService } from "../categoria.service";
 
-import { switchMap } from "rxjs/operators";
-
-import toastr from "toastr";
+import { MenuItem, MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-categoria-form',
   templateUrl: './categoria-form.component.html',
-  styleUrls: ['./categoria-form.component.css']
+  styleUrls: ['./categoria-form.component.css'],
+  providers: [ MessageService ]
 })
 export class CategoriaFormComponent implements OnInit, AfterContentChecked {
 
@@ -31,7 +30,8 @@ export class CategoriaFormComponent implements OnInit, AfterContentChecked {
     private categoriaService: CategoriaService,
     private route: ActivatedRoute,
     private router: Router,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private messageService: MessageService
   ) {
     this.items = [{ label: 'Categorias' }];
     this.home = { icon: 'pi pi-home', routerLink: '/' };
@@ -90,7 +90,6 @@ export class CategoriaFormComponent implements OnInit, AfterContentChecked {
     }
   }
 
-
   private setPageTitle() {
     if (this.currentAction == 'new')
       this.pageTitle = "Cadastro de Nova Categoria"
@@ -100,7 +99,6 @@ export class CategoriaFormComponent implements OnInit, AfterContentChecked {
     }
     this.items = [...[{ label: 'Categorias' }], { label: this.pageTitle }];
   }
-
 
   private createCategoria() {
     const categoria: Categoria = Object.assign(new Categoria(), this.categoriaForm.value);
@@ -112,7 +110,6 @@ export class CategoriaFormComponent implements OnInit, AfterContentChecked {
       )
   }
 
-
   private updateCategoria() {
     const categoria: Categoria = Object.assign(new Categoria(), this.categoriaForm.value);
 
@@ -123,25 +120,21 @@ export class CategoriaFormComponent implements OnInit, AfterContentChecked {
       )
   }
 
-
   private actionsForSuccess(categoria: Categoria) {
-    toastr.success("Solicitação processada com sucesso!");
-
-    // redirect/reload component page
-    this.router.navigateByUrl("categorias", { skipLocationChange: true }).then(
-      () => this.router.navigate(["categorias", categoria.id, "edit"])
-    )
-  }
-
-
-  private actionsForError(error) {
-    toastr.error("Ocorreu um erro ao processar a sua solicitação!");
-
+    this.messageService.add({severity:'success', summary:'Success', detail:'Solicitação processada com êxito!'});
     this.submittingForm = false;
 
-    if (error.status === 422)
-      this.serverErrorMessages = JSON.parse(error._body).errors;
-    else
-      this.serverErrorMessages = ["Falha na comunicação com o servidor. Por favor, tente mais tarde."]
+    if(this.currentAction == 'new') {
+      setTimeout(() => {
+        this.router.navigateByUrl("categorias", { skipLocationChange: true }).then(
+          () => this.router.navigate(["categorias", categoria.id, "edit"])
+        )
+      }, 500);
+    }
+  }
+
+  private actionsForError(error) {
+    this.messageService.add({severity:'error', summary:'Falha', detail:'Ocorreu um erro ao processar a sua solicitação!'});
+    console.error(error);
   }
 }

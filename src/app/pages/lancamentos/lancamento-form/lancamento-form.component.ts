@@ -1,22 +1,19 @@
 import { Component, OnInit, AfterContentChecked } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
-import { MenuItem } from 'primeng/api';
+import { map, switchMap } from "rxjs/operators";
 
 import { Lancamento } from "../lancamento.model";
 import { LancamentoService } from "../lancamento.service";
-
-import { Categoria } from "../../categorias/categoria.model";
 import { CategoriaService } from "../../categorias/categoria.service";
 
-import { switchMap } from "rxjs/operators";
-
-import toastr from "toastr";
+import { MenuItem, MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-lancamento-form',
   templateUrl: './lancamento-form.component.html',
-  styleUrls: ['./lancamento-form.component.css']
+  styleUrls: ['./lancamento-form.component.css'],
+  providers: [ MessageService ]
 })
 export class LancamentoFormComponent implements OnInit, AfterContentChecked {
 
@@ -26,7 +23,7 @@ export class LancamentoFormComponent implements OnInit, AfterContentChecked {
   serverErrorMessages: string[] = null;
   submittingForm: boolean = false;
   lancamento: Lancamento = new Lancamento();
-  categorias: Array<Categoria>;
+  categorias: Array<any>;
 
   imaskConfig = {
     mask: Number,
@@ -51,6 +48,13 @@ export class LancamentoFormComponent implements OnInit, AfterContentChecked {
     clear: 'Limpar'
   }
 
+  types = [
+    {label: 'Despesa', value: 'expense'},
+    {label: 'Receita', value: 'revenue'}
+  ];
+
+  paidOptions = [{label: 'Pendente', value: false}, {label: 'Pago', value: true}];
+
   items: MenuItem[];
   home: MenuItem;
 
@@ -59,7 +63,8 @@ export class LancamentoFormComponent implements OnInit, AfterContentChecked {
     private route: ActivatedRoute,
     private router: Router,
     private formBuilder: FormBuilder,
-    private categoriaService: CategoriaService
+    private categoriaService: CategoriaService,
+    private messageService: MessageService
   ) {
     this.items = [{ label: 'Lancaçmentos' }];
     this.home = { icon: 'pi pi-home', routerLink: '/' };
@@ -85,18 +90,6 @@ export class LancamentoFormComponent implements OnInit, AfterContentChecked {
       this.updateLancamento();
   }
 
-  get typeOptions(): Array<any> {
-    return Object.entries(Lancamento.types).map(
-      ([value, text]) => {
-        return {
-          text: text,
-          value: value
-        }
-      }
-    )
-  }
-
-
   // PRIVATE METHODS
 
   private setCurrentAction() {
@@ -111,11 +104,11 @@ export class LancamentoFormComponent implements OnInit, AfterContentChecked {
       id: [null],
       name: [null, [Validators.required, Validators.minLength(2)]],
       description: [null],
-      type: ["expense", [Validators.required]],
+      type: ['expense', [Validators.required]],
       amount: [null, [Validators.required]],
       date: [null, [Validators.required]],
       paid: [true, [Validators.required]],
-      categoriaId: [null, [Validators.required]]
+      categoryName: [null, [Validators.required]]
     });
   }
 
@@ -137,11 +130,17 @@ export class LancamentoFormComponent implements OnInit, AfterContentChecked {
 
   private loadCategorias() {
     this.categoriaService.getAll()
+      .pipe(
+        map(categoria => {
+          const options = [{ label: 'Selecione uma categoria', value: null}];
+          categoria.forEach(c => options.push({ label: c.name, value: c.name}))
+          return options;
+        })
+      )
       .subscribe(
         categorias => this.categorias = categorias
       );
   }
-
 
   private setPageTitle() {
     if (this.currentAction == 'new')
@@ -153,7 +152,6 @@ export class LancamentoFormComponent implements OnInit, AfterContentChecked {
     this.items = [...[{ label: 'Lancaçmentos' }], { label: this.pageTitle }];
   }
 
-
   private createLancamento() {
     const lancamento: Lancamento = Object.assign(new Lancamento(), this.lancamentoForm.value);
 
@@ -163,7 +161,6 @@ export class LancamentoFormComponent implements OnInit, AfterContentChecked {
         error => this.actionsForError(error)
       )
   }
-
 
   private updateLancamento() {
     const lancamento: Lancamento = Object.assign(new Lancamento(), this.lancamentoForm.value);
@@ -175,25 +172,21 @@ export class LancamentoFormComponent implements OnInit, AfterContentChecked {
       )
   }
 
-
   private actionsForSuccess(lancamento: Lancamento) {
-    toastr.success("Solicitação processada com sucesso!");
-
-    // redirect/reload component page
-    this.router.navigateByUrl("lancamentos", { skipLocationChange: true }).then(
-      () => this.router.navigate(["lancamentos", lancamento.id, "edit"])
-    )
-  }
-
-
-  private actionsForError(error) {
-    toastr.error("Ocorreu um erro ao processar a sua solicitação!");
-
+    this.messageService.add({severity:'success', summary:'Success', detail:'Solicitação processada com êxito!'});
     this.submittingForm = false;
 
-    if (error.status === 422)
-      this.serverErrorMessages = JSON.parse(error._body).errors;
-    else
-      this.serverErrorMessages = ["Falha na comunicação com o servidor. Por favor, tente mais tarde."]
+    if(this.currentAction == 'new') {
+      setTimeout(() => {
+        this.router.navigateByUrl('lancamentos', {skipLocationChange: true}).then(
+          () => this.router.navigate(['lancamentos', lancamento.id, "edit"])
+        )
+      }, 500);
+    }
+  }
+
+  private actionsForError(error) {
+    this.messageService.add({severity:'error', summary:'Falha', detail:'Ocorreu um erro ao processar a sua solicitação!'});
+    console.error(error);
   }
 }

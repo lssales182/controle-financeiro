@@ -1,137 +1,110 @@
-<p-breadcrumb [model]="items" [home]="home" styleClass="mb-5"></p-breadcrumb>
+<p-toast></p-toast>
+<p-breadcrumb [model]="items" [home]="home" styleClass="p-mb-5"></p-breadcrumb>
 
-<div class="row mb-4">
-  <div class="col-md-9">
-    <h1 class="h2 border-left pl-2">
+<div class="p-mb-4 p-d-flex p-jc-between">
+  <div>
+    <h2 class="p-m-0">
       {{pageTitle}}
-    </h1>
+    </h2>
   </div>
-  <div class="col-md-3">
-    <a routerLink="/lancamentos" class="btn btn-light float-right">
-      << Voltar
-    </a>
+  <div>
+    <button routerLink="/lancamentos" pButton pRipple type="button" label="Voltar" icon="pi pi-chevron-left"
+      class="p-button-secondary p-button-text"></button>
   </div>
 </div>
 
 
 <form [formGroup]="lancamentoForm" (submit)="submitForm()">
 
-  <div class="card">
-    <div class="card-header">
-      Informações sobre o Lançamento
-    </div>
-
-    <div class="card-body">
-      <div class="form-row">
-        <!-- type -->
-        <div class="form-group col-md-2">
+  <p-panel header="Informações sobre o Lançamento">
+    <div class="p-fluid p-grid p-mt-2">
+      <!-- type -->
+      <div class="p-field p-md-2">
+        <span class="p-float-label">
+          <p-dropdown inputId="type" [options]="types" formControlName="type"></p-dropdown>
           <label for="type">Tipo</label>
+        </span>
 
-          <select name="type" id="type" formControlName="type" class="form-control">
-            <option *ngFor="let option of typeOptions" [value]="option.value">{{ option.text }}</option>
-          </select>
-
-          <div class="text-danger" *ngIf="lancamentoForm.get('type').invalid && lancamentoForm.get('type').touched">
-            <div *ngIf="lancamentoForm.get('type').errors.required">dado obrigatório</div>
-          </div>
-        </div>
-
-        <!-- name -->
-        <div class="form-group col-md-5">
-          <label for="name">Lançamento</label>
-          <input type="text" class="form-control" id="name" formControlName="name">
-
-          <div class="text-danger" *ngIf="lancamentoForm.get('name').invalid && lancamentoForm.get('name').touched">
-            <div *ngIf="lancamentoForm.get('name').errors.required">dado obrigatório</div>
-            <div *ngIf="lancamentoForm.get('name').errors.minlength">deve ter no mínimo 2 caracteres</div>
-          </div>
-        </div>
-
-        <!-- amount -->
-        <div class="form-group col-md-3">
-          <label for="amount">Valor</label>
-          <div class="input-group">
-            <div class="input-group-prepend">
-              <div class="input-group-text">R$</div>
-            </div>
-            <input [imask]="imaskConfig" type="text" class="form-control text-right" id="amount" formControlName="amount">
-          </div>
-
-          <div class="text-danger" *ngIf="lancamentoForm.get('amount').invalid && lancamentoForm.get('amount').touched">
-            <div *ngIf="lancamentoForm.get('amount').errors.required">dado obrigatório</div>
-          </div>
-        </div>
-
-        <!-- date -->
-        <div class="form-group col-md-2">
-          <label for="date">Data</label>
-          <p-calendar
-            id="date"
-            formControlName="date"
-            inputStyleClass="form-control"
-            dataType="string"
-            dateFormat="dd/mm/yy"
-            [locale]="ptBR"
-            [showButtonBar]="true">
-          </p-calendar>
-
-          <div class="text-danger" *ngIf="lancamentoForm.get('date').invalid && lancamentoForm.get('date').touched">
-            <div *ngIf="lancamentoForm.get('date').errors.required">dado obrigatório</div>
-          </div>
+        <div style="color: #ce0000;" *ngIf="lancamentoForm.get('type').invalid && lancamentoForm.get('type').touched">
+          <div *ngIf="lancamentoForm.get('type').errors.required">dado obrigatório</div>
         </div>
       </div>
 
+      <!-- name -->
+      <div class="p-field p-md-5">
+        <span class="p-float-label">
+          <input type="text" id="name" pInputText formControlName="name">
+          <label for="name">Lançamento</label>
+        </span>
 
-      <div class="form-row">
-        <!-- paid -->
-        <div class="form-group col-md-2">
-          <label for="paid">Pago</label>
-          <div class="btn-group">
-            <label (click)="lancamentoForm.get('paid').setValue(true)" [class.active]="lancamentoForm.get('paid').value == true" class="btn btn-outline-info">
-              Pago
-            </label>
-            <label (click)="lancamentoForm.get('paid').setValue(false)" [class.active]="lancamentoForm.get('paid').value == false" class="btn btn-outline-info">
-              Pendente
-            </label>
-          </div>
+        <div style="color: #ce0000;" *ngIf="lancamentoForm.get('name').invalid && lancamentoForm.get('name').touched">
+          <div *ngIf="lancamentoForm.get('name').errors.required">dado obrigatório</div>
+          <div *ngIf="lancamentoForm.get('name').errors.minlength">deve ter no mínimo 2 caracteres</div>
+        </div>
+      </div>
 
-          <div class="text-danger" *ngIf="lancamentoForm.get('paid').invalid && lancamentoForm.get('paid').touched">
-            <div *ngIf="lancamentoForm.get('paid').errors.required">dado obrigatório</div>
-          </div>
+      <!-- amount -->
+      <div class="p-field p-md-3">
+        <div class="p-inputgroup">
+          <span class="p-inputgroup-addon">$</span>
+          <input type="text" pInputText placeholder="Valor" formControlName="amount">
+          <span class="p-inputgroup-addon">,00</span>
         </div>
 
-        <!-- categoriaId -->
-        <div class="form-group col-md-3">
-          <label for="categoriaId">Categoria</label>
-
-          <select name="categoriaId" id="categoriaId" formControlName="categoriaId" class="form-control">
-            <option *ngFor="let categoria of categorias" [value]="categoria.id">{{ categoria.name }}</option>
-          </select>
-
-          <div class="text-danger" *ngIf="lancamentoForm.get('categoriaId').invalid && lancamentoForm.get('categoriaId').touched">
-            <div *ngIf="lancamentoForm.get('categoriaId').errors.required">dado obrigatório</div>
-          </div>
+        <div style="color: #ce0000;" *ngIf="lancamentoForm.get('amount').invalid && lancamentoForm.get('amount').touched">
+          <div *ngIf="lancamentoForm.get('amount').errors.required">dado obrigatório</div>
         </div>
+      </div>
 
-        <!-- description -->
-        <div class="form-group col-md-7">
+      <!-- date -->
+      <div class="p-field p-md-2">
+        <span class="p-float-label">
+          <p-calendar id="date" formControlName="date" inputStyleClass="form-control" dataType="string"
+            dateFormat="dd/mm/yy" [locale]="ptBR" [showButtonBar]="true">
+          </p-calendar>
+          <label for="date">Data</label>
+        </span>
+
+        <div style="color: #ce0000;" *ngIf="lancamentoForm.get('date').invalid && lancamentoForm.get('date').touched">
+          <div *ngIf="lancamentoForm.get('date').errors.required">dado obrigatório</div>
+        </div>
+      </div>
+
+      <!-- paid -->
+      <div class="p-field p-md-3">
+        <p-selectButton [options]="paidOptions" formControlName="paid"></p-selectButton>
+
+        <div style="color: #ce0000;" *ngIf="lancamentoForm.get('paid').invalid && lancamentoForm.get('paid').touched">
+          <div *ngIf="lancamentoForm.get('paid').errors.required">dado obrigatório</div>
+        </div>
+      </div>
+
+      <!-- categoryName -->
+      <div class="p-field p-md-3">
+        <span class="p-float-label">
+          <p-dropdown inputId="categoryName" [options]="categorias" formControlName="categoryName"></p-dropdown>
+          <label for="categoryName">Categoria</label>
+        </span>
+
+        <div style="color: #ce0000;"
+          *ngIf="lancamentoForm.get('categoryName').invalid && lancamentoForm.get('categoryName').touched">
+          <div *ngIf="lancamentoForm.get('categoryName').errors.required">dado obrigatório</div>
+        </div>
+      </div>
+
+      <!-- description -->
+      <div class="p-field p-md-6">
+        <span class="p-float-label">
+          <input type="text" id="description" pInputText formControlName="description">
           <label for="description">Descrição</label>
-          <input type="text" class="form-control" id="description" formControlName="description">
-        </div>
+        </span>
       </div>
     </div>
+  </p-panel>
+
+  <div class="p-d-flex p-jc-end">
+    <button [disabled]="submittingForm || lancamentoForm.invalid" type="submit" pButton pRipple label="Salvar" class="p-button-raised p-mt-3"></button>
   </div>
-
-
-  <div class="alert alert-danger mt-4" *ngIf="serverErrorMessages">
-    <strong>Erro no servidor:</strong>
-    <ul>
-      <li *ngFor="let error of serverErrorMessages">{{error}}</li>
-    </ul>
-  </div>
-
-  <button [disabled]="submittingForm || lancamentoForm.invalid" type="submit" class="btn btn-primary btn-lg float-right mt-3">
-    Salvar
-  </button>
 
 </form>
+

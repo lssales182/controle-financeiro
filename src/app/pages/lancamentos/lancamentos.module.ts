@@ -7,11 +7,15 @@ import { LancamentosRoutingModule } from './lancamentos-routing.module';
 import { LancamentoListComponent } from "./lancamento-list/lancamento-list.component";
 import { LancamentoFormComponent } from "./lancamento-form/lancamento-form.component";
 
+import { SelectButtonModule } from 'primeng/selectbutton';
+import { DropdownModule } from 'primeng/dropdown';
+import { PanelModule } from 'primeng/panel';
+import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { TableModule } from 'primeng/table';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { CalendarModule } from "primeng/calendar";
-import { IMaskModule } from "angular-imask";
+import { ToastModule } from 'primeng/toast';
 
 @NgModule({
   imports: [
@@ -19,10 +23,14 @@ import { IMaskModule } from "angular-imask";
     LancamentosRoutingModule,
     ReactiveFormsModule,
 
+    ToastModule,
+    SelectButtonModule,
+    DropdownModule,
+    PanelModule,
+    ButtonModule,
     InputTextModule,
     BreadcrumbModule,
     CalendarModule,
-    IMaskModule,
     TableModule
   ],
   declarations: [LancamentoListComponent, LancamentoFormComponent]
