@@ -1,0 +1,10 @@
+<div class="p-d-flex p-jc-between p-mb-4">
+  <div>
+    <h2 class="p-m-0">
+      {{pageTitle}}
+    </h2>
+  </div>
+  <div *ngIf="showButton" class="p-as-center">
+    <button [routerLink]="buttonLink" pButton pRipple type="button" [label]="buttonText" [icon]="buttonIcon" [class]="buttonClass"></button>
+  </div>
+</div>

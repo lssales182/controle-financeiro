@@ -11,6 +11,15 @@
   </div>
 </div>
 
+<app-page-header
+  page-title="Lançamentos"
+  button-text="Novo Lançamento"
+  button-link="new"
+  button-class="p-button-raised"
+  button-icon="pi pi-plus"
+>
+</app-page-header>
+
 <p-table [value]="lancamentos" [paginator]="true" [rows]="10" styleClass="p-mb-5">
   <ng-template pTemplate="caption">
     <div class="p-d-flex p-jc-end">

@@ -18,6 +18,8 @@ import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { CalendarModule } from "primeng/calendar";
 import { ToastModule } from 'primeng/toast';
 
+import { SharedModule } from '../../shared/shared.module';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -33,7 +35,9 @@ import { ToastModule } from 'primeng/toast';
     InputTextModule,
     BreadcrumbModule,
     CalendarModule,
-    TableModule
+    TableModule,
+
+    SharedModule
   ],
   declarations: [LancamentoListComponent, LancamentoFormComponent]
 })
