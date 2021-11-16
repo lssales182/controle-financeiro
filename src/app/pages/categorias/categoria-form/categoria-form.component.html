@@ -13,6 +13,15 @@
   </div>
 </div>
 
+<app-page-header
+  [page-title]="pageTitle"
+  button-text="Voltar"
+  button-link="/categorias"
+  button-class="p-button-secondary p-button-text"
+  button-icon="pi pi-chevron-left"
+>
+</app-page-header>
+
 
 <form [formGroup]="categoriaForm" (submit)="submitForm()">
 

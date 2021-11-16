@@ -1,15 +1,13 @@
 <p-breadcrumb [model]="items" [home]="home" styleClass="p-mb-5"></p-breadcrumb>
 
-<div class="p-d-flex p-jc-between p-mb-4">
-  <div>
-    <div class="title p-m-0">
-      Lançamentos
-    </div>
-  </div>
-  <div class="p-as-center">
-    <button routerLink="new" pButton pRipple type="button" label="Novo Lançamento" icon="pi pi-plus" class="p-button-raised"></button>
-  </div>
-</div>
+<app-page-header
+  page-title="Lançamentos"
+  button-text="Novo Lançamento"
+  button-link="new"
+  button-class="p-button-raised"
+  button-icon="pi pi-plus"
+>
+</app-page-header>
 
 <p-table [value]="lancamentos" [paginator]="true" [rows]="10" styleClass="p-mb-5">
   <ng-template pTemplate="caption">

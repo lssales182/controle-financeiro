@@ -11,6 +11,15 @@
   </div>
 </div>
 
+<app-page-header
+  page-title="Categorias"
+  button-text="Nova Categoria"
+  button-link="new"
+  button-class="p-button-raised"
+  button-icon="pi pi-plus"
+>
+</app-page-header>
+
 <p-table [value]="categorias" [paginator]="true" [rows]="10" styleClass="p-mb-5">
   <ng-template pTemplate="header">
     <tr>

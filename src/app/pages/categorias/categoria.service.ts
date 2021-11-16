@@ -5,13 +5,14 @@ import { Observable, throwError } from "rxjs";
 import { map, catchError } from "rxjs/operators";
 
 import { Categoria } from "./categoria.model";
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CategoriaService {
 
-  private apiPath: string = "api/categorias";
+  private apiPath: string = environment.categoryPath;
 
   constructor(private http: HttpClient) { }
 

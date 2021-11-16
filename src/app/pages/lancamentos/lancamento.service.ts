@@ -7,13 +7,14 @@ import { map, catchError, flatMap } from "rxjs/operators";
 import { CategoriaService } from "../categorias/categoria.service";
 
 import { Lancamento } from "./lancamento.model";
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LancamentoService {
 
-  private apiPath: string = "api/lancamentos";
+  private apiPath: string = environment.entryPath;
 
   constructor(private http: HttpClient, private categoriaService: CategoriaService) { }
 

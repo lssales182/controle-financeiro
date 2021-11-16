@@ -1,18 +1,14 @@
 <p-toast></p-toast>
 <p-breadcrumb [model]="items" [home]="home" styleClass="p-mb-5"></p-breadcrumb>
 
-<div class="p-mb-4 p-d-flex p-jc-between">
-  <div>
-    <div class="title p-m-0">
-      {{pageTitle}}
-    </div>
-  </div>
-  <div>
-    <button routerLink="/lancamentos" pButton pRipple type="button" label="Voltar" icon="pi pi-chevron-left"
-      class="p-button-secondary p-button-text"></button>
-  </div>
-</div>
-
+<app-page-header
+  [page-title]="pageTitle"
+  button-text="Voltar"
+  button-link="/lancamentos"
+  button-class="p-button-secondary p-button-text"
+  button-icon="pi pi-chevron-left"
+>
+</app-page-header>
 
 <form [formGroup]="lancamentoForm" (submit)="submitForm()">
 
