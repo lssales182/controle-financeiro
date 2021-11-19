@@ -13,6 +13,8 @@ import { ToastModule } from 'primeng/toast';
 import { PanelModule } from 'primeng/panel';
 import { InputTextModule } from 'primeng/inputtext';
 
+import { SharedModule } from '../../shared/shared.module';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -24,7 +26,9 @@ import { InputTextModule } from 'primeng/inputtext';
     ToastModule,
     ButtonModule,
     BreadcrumbModule,
-    TableModule
+    TableModule,
+
+    SharedModule
   ],
   declarations: [CategoriaListComponent, CategoriaFormComponent]
 })
