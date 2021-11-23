@@ -5,6 +5,8 @@ import { Lancamento } from "../lancamento.model";
 import { LancamentoService } from "../lancamento.service";
 
 import currencyFormatter from "currency-formatter";
+import { CategoriaService } from '../../categorias/categoria.service';
+import { Categoria } from '../../categorias/categoria.model';
 
 @Component({
   selector: 'app-lancamento-list',
@@ -14,6 +16,7 @@ import currencyFormatter from "currency-formatter";
 export class LancamentoListComponent implements OnInit {
 
   lancamentos: Lancamento[] = [];
+  categorias: Categoria[] = [];
 
   expenseTotal: any = 0;
   revenueTotal: any = 0;
@@ -23,7 +26,8 @@ export class LancamentoListComponent implements OnInit {
   home: MenuItem;
 
   constructor(
-    private lancamentoService: LancamentoService
+    private lancamentoService: LancamentoService,
+    private categoriaService: CategoriaService
   ) {
     this.items = [
       { label: 'Lançamentos'}
@@ -36,8 +40,28 @@ export class LancamentoListComponent implements OnInit {
     .subscribe(
       lancamentos => this.lancamentos = lancamentos.sort((a, b) => b.id - a.id),
       error => alert('Erro ao carregar a lista'),
-      () => this.calculateBalance()
+      () => {
+        this.calculateBalance();
+        this.getCategorias()
+      }
     )
+  }
+
+  getCategorias() {
+    this.categoriaService.getAll()
+    .subscribe(
+      categorias => this.categorias = categorias,
+      error => alert('Erro ao carregar a lista'),
+      () => {
+        this.lancamentos.forEach(l => {
+          this.categorias.forEach(c => {
+            if (l.categoryId === c.id) {
+              l.categoryName = c.name;
+            }
+          })
+        })
+      }
+    );
   }
 
   deleteLancamento(lancamento) {

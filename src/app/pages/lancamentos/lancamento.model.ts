@@ -7,6 +7,7 @@ export class Lancamento {
     public amount?: string,
     public date?: string,
     public paid?: boolean,
+    public categoryId?: number,
     public categoryName?: string
   ){ }
 
