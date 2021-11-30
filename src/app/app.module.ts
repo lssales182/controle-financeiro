@@ -21,7 +21,7 @@ import { SharedModule } from 'primeng/api';
     BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
-    HttpClientInMemoryWebApiModule.forRoot(InMemoryDatabase),
+    // HttpClientInMemoryWebApiModule.forRoot(InMemoryDatabase),
 
     MenubarModule,
     SharedModule

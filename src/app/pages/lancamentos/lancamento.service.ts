@@ -16,10 +16,12 @@ export class LancamentoService {
 
   private apiPath: string = environment.entryPath;
 
-  constructor(private http: HttpClient, private categoriaService: CategoriaService) { }
+  constructor(private http: HttpClient) { }
 
 
   getAll(): Observable<Lancamento[]> {
+    console.log(this.apiPath);
+
     return this.http.get(this.apiPath).pipe(
       catchError(this.handleError),
       map(this.jsonDataToLancamentos)

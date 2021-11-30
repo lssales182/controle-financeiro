@@ -1,18 +1,6 @@
 <p-toast></p-toast>
 <p-breadcrumb [model]="items" [home]="home" styleClass="p-mb-5"></p-breadcrumb>
 
-<div class="p-mb-4 p-d-flex p-jc-between">
-  <div>
-    <h2 class="p-m-0">
-      {{pageTitle}}
-    </h2>
-  </div>
-  <div>
-    <button routerLink="/categorias" pButton pRipple type="button" label="Voltar" icon="pi pi-chevron-left"
-      class="p-button-secondary p-button-text"></button>
-  </div>
-</div>
-
 <app-page-header
   [page-title]="pageTitle"
   button-text="Voltar"
@@ -21,7 +9,6 @@
   button-icon="pi pi-chevron-left"
 >
 </app-page-header>
-
 
 <form [formGroup]="categoriaForm" (submit)="submitForm()">
 

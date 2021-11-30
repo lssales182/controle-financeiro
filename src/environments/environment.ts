@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  entryPath: '/lancamentos',
-  categoryPath: '/categorias'
+  entryPath: 'http://localhost:8080/entry',
+  categoryPath: 'http://localhost:8080/category'
 };
 
 /*
